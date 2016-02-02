@@ -1,0 +1,48 @@
+{
+  "name": "angularjs-components",
+  "version": "0.1.0",
+  "description": "Angularjs utils and components",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cenkce/angularjs-utils.git"
+  },
+  "keywords": [
+    "angularjs",
+    "components",
+    "utilities",
+    "library",
+    "javascript"
+  ],
+  "author": "Cenk Cetinkaya",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cenkce/angularjs-utils/issues"
+  },
+  "homepage": "https://github.com/cenkce/angularjs-utils#readme",
+  "dependencies": {
+    "angular": "^1.4.9",
+    "angular-mocks": "^1.4.9",
+    "del": "^2.2.0",
+    "event-stream": "^3.3.2",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-footer": "^1.0.5",
+    "gulp-git": "^1.7.0",
+    "gulp-header": "^1.7.1",
+    "gulp-if": "^2.0.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.1",
+    "jshint": "^2.9.1",
+    "lazypipe": "^1.0.1",
+    "merge-stream": "^1.0.0",
+    "streamqueue": "^1.1.1",
+    "uglify-js": "^2.6.1"
+  }
+}

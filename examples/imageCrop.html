@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/exif-js/exif.js"></script>
+    <script src="bower_components/cropperjs/dist/cropper.js"></script>
+    <link href="bower_components/cropperjs/dist/cropper.css">
+    <script src="../node_modules/angular/angular.js"></script>
+    <script src="../dist/app.min.js"></script>
+    <style>
+        .cropit-image-preview {
+            background-color: #f8f8f8;
+            background-size: cover;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-top: 7px;
+            width: 250px;
+            height: 250px;
+            cursor: move;
+        }
+
+        .cropit-image-background {
+            opacity: .2;
+            cursor: auto;
+        }
+
+        .image-size-label {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+            width: 100%;
+            height: 10px;
+            margin: 0;
+            border: none;
+            padding: 1px 6px;
+            border-radius: 6px;
+            margin-top:4px;
+            background: #EEE;
+            box-shadow: inset 0 1px 0 0 #999,inset 0 -1px 0 0 #999;
+            -webkit-box-shadow: inset 0 1px 0 0 #999,inset 0 -1px 0 0 #999;
+            outline: none; /* no focus outline */
+        }
+
+        input[type="range"]::-moz-range-track {
+            border: inherit;
+            background: transparent;
+        }
+
+        input[type="range"]::-ms-track {
+            border: inherit;
+            color: transparent; /* don't drawn vertical reference line */
+            background: transparent;
+        }
+
+        input[type="range"]::-ms-fill-lower,
+        input[type="range"]::-ms-fill-upper {
+            background: transparent;
+        }
+
+        input[type="range"]::-ms-tooltip {
+            display: none;
+        }
+
+        /* thumb */
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: none;
+            border-radius: 50%;
+            background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #529de1), color-stop(100%, #245e8f)); /* android <= 2.2 */
+            background-image: -webkit-linear-gradient(top , #529de1 0, #245e8f 100%); /* older mobile safari and android > 2.2 */;
+            background-image: linear-gradient(to bottom, #529de1 0, #245e8f 100%); /* W3C */
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border: none;
+            border-radius: 50%;
+            background-image: linear-gradient(to bottom, #529de1 0, #245e8f 100%); /* W3C */
+        }
+
+        input[type="range"]::-ms-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 0;
+            background-image: linear-gradient(to bottom, #529de1 0, #245e8f 100%); /* W3C */
+        }
+    </style>
+    <script>
+
+    </script>
+</head>
+<body ng-app="cenkce.utils">
+<div id="photoconfirm-page">
+    <input ng-model='photo' class="cropper-file" type="file" value="Yükle" style="display: none;">
+    <div class="cropper" cropper>
+        <div class="cropperPreview"><img class="cropperPreview-placeholder" src="http://placehold.it/250x250"></div>
+        <div class="cropperPreview-zoom-header">Boyutlandırma</div>
+        <input type="range" class="cropperPreview-zoom-rangeTool" oninput="cropperCtrl.zoomTo(this.value)" min="0" max="1" step="0.01">
+        <div>
+            <a href="javascript:void(0);" ng-click="cropperCtrl.fileBrowse();">Yükle</a>
+            <!--<a ui-sref="upload.parent" id="cancel" ></a>-->
+        </div>
+    </div>
+</div><!-- photo confirm page-->
+
+</body>
+</html>
