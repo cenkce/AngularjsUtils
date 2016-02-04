@@ -99,18 +99,20 @@
         }
     </style>
     <script>
-
+        var app = angular.module('exampleApp', ['cenkce.utils'])
+                         .controller('ctrl', ['$scope', function ($scope) {
+                        }]);
     </script>
 </head>
-<body ng-app="cenkce.utils">
+<body ng-app="exampleApp">
 <div id="photoconfirm-page">
     <input ng-model='photo' class="cropper-file" type="file" value="Yükle" style="display: none;">
     <div class="cropper" cropper>
-        <div class="cropperPreview"><img class="cropperPreview-placeholder" src="http://placehold.it/250x250"></div>
+        <div class="cropperPreview" cropper-preview><img class="cropperPreview-placeholder" src="http://placehold.it/250x250"></div>
         <div class="cropperPreview-zoom-header">Boyutlandırma</div>
         <input type="range" class="cropperPreview-zoom-rangeTool" oninput="cropperCtrl.zoomTo(this.value)" min="0" max="1" step="0.01">
         <div>
-            <a href="javascript:void(0);" ng-click="cropperCtrl.fileBrowse();">Yükle</a>
+            <a href="javascript:void(0);" ng-click="fileBrowse();">Yükle</a>
             <!--<a ui-sref="upload.parent" id="cancel" ></a>-->
         </div>
     </div>

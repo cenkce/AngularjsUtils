@@ -2,7 +2,6 @@
  * Created by cenkce on 1/23/16.
  */
 
-
 ImageFileReader.$inject = ['$q'];
 
 function ImageFileReader(p) {
