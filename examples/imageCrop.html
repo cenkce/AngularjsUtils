@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <title></title>
     <script src="bower_components/exif-js/exif.js"></script>
+    <link href="bower_components/cropperjs/dist/cropper.css" rel="stylesheet" type="text/css" media="all" />
     <script src="bower_components/cropperjs/dist/cropper.js"></script>
-    <link href="bower_components/cropperjs/dist/cropper.css">
     <script src="../node_modules/angular/angular.js"></script>
     <script src="../dist/app.min.js"></script>
     <style>
+/*
         .cropit-image-preview {
             background-color: #f8f8f8;
             background-size: cover;
@@ -29,6 +30,7 @@
             text-align: center;
             margin-top: 10px;
         }
+*/
 
         input[type="file"] {
             display: none;
@@ -97,6 +99,16 @@
             border: 0;
             background-image: linear-gradient(to bottom, #529de1 0, #245e8f 100%); /* W3C */
         }
+
+        .cropperPreview > div{
+            background-color: #f8f8f8;
+            background-size: cover;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            width: 250px;
+            height: 250px;
+            cursor: move;
+        }
     </style>
     <script>
         var app = angular.module('exampleApp', ['cenkce.utils'])
@@ -110,7 +122,7 @@
     <div class="cropper" cropper>
         <div class="cropperPreview" cropper-preview><img class="cropperPreview-placeholder" src="http://placehold.it/250x250"></div>
         <div class="cropperPreview-zoom-header">Boyutlandırma</div>
-        <input type="range" class="cropperPreview-zoom-rangeTool" oninput="cropperCtrl.zoomTo(this.value)" min="0" max="1" step="0.01">
+        <input type="range" class="cropperPreview-zoom-rangeTool" ng-model="zoom" min="0" max="1" step="0.01">
         <div>
             <a href="javascript:void(0);" ng-click="fileBrowse();">Yükle</a>
             <!--<a ui-sref="upload.parent" id="cancel" ></a>-->

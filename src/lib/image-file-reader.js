@@ -14,9 +14,9 @@ function ImageFileReader(p) {
         var promises = [];
 
         for (var i = 0, f; f = files[i]; i++) {
-            // Only process image files.
+            // process for only image files.
             if (!f.type.match('image.*')) {
-                throw new Error('type must be image');
+                throw new Error('file must be image');
                 continue;
             }
 
