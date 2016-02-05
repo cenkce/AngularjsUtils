@@ -19,7 +19,7 @@ var options = {
     uglify: {
         sequences     : true,  // join consecutive statemets with the “comma operator”
         properties    : true,  // optimize property access: a["foo"] → a.foo
-        dead_code     : false,  // discard unreachable code
+        dead_code     : true,  // discard unreachable code
         drop_debugger : false,  // discard “debugger” statements
         unsafe        : false, // some unsafe optimizations (see below)
         conditionals  : true,  // optimize if-s and conditional expressions
@@ -27,7 +27,7 @@ var options = {
         evaluate      : true,  // evaluate constant expressions
         booleans      : true,  // optimize boolean expressions
         loops         : true,  // optimize loops
-        unused        : false,  // drop unused variables/functions
+        unused        : true,  // drop unused variables/functions
         mangle: true,
         compress:{
             hoist_funs    : false,  // hoist function declarations
@@ -37,7 +37,7 @@ var options = {
         join_vars     : true,  // join var declarations
         cascade       : true,  // try to cascade `right` into `left` in sequences
         side_effects  : false,  // drop side-effect-free statements
-        warnings      : true,  // warn about potentially dangerous optimizations/code
+        warnings      : false,  // warn about potentially dangerous optimizations/code
         global_defs   : {}     // global definitions
     },
     sass: {},

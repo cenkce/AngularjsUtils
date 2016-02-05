@@ -196,9 +196,9 @@ function CropperComponent($cropper){
     return {
         restrict: 'A',
         controller: ['$scope', function ($scope) {
-            $scope.cropper = {};
+            $scope.cropper        = {};
             $scope.cropper.zoomTo = 0;
-            $scope.zoom = 0;
+            $scope.zoom           = 0;
 
             $scope.$watch('zoom', function (newV, oldV) {
                 console.log('zoom');
@@ -227,14 +227,12 @@ function CropperComponent($cropper){
                 elem.append(_btn);
             }
 
-
             //file input source is changed by user
             _btn.bind('change', function (e) {
                 $scope.addPreview($cropper.getElement());
                 $cropper.load(e.target.files).then(
                     //completed
                     function (data) {
-                       console.log('resolved');
                     },
                     //error
                     function (data) {
@@ -243,7 +241,7 @@ function CropperComponent($cropper){
                     function (data) {
                         console.log(data);
                         if(data.message == CropServiceEvents.imageLoaded) {
-                            data.complete();
+                            //data.complete();
                         } else if(data.message == CropServiceEvents.completed) {
                             //data.complete();
                         }
