@@ -1,7 +1,7 @@
 # AngularjsUtils
 Angularjs utilities library
 
-###Cropperjs Angular Component and Adapter Application
+###Cropperjs Angular Component and Application Service
 
 For more info http://cropperjs.com/
 
@@ -31,4 +31,10 @@ var app = angular.module('exampleApp', ['cenkce.utils'])
     </div>
 </div>
 ```
+
+- Sharing Component for Facebook and Twitter
+- Google Analytics Component
+- File Reader Component for input file element
+- Guid Generator Component
+
 
