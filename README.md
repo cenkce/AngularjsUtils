@@ -3,7 +3,9 @@ Angularjs utilities library
 
 #Cropperjs Angular Component and Adapter Application
 
-Usage
+For more info http://cropperjs.com/
+
+- Usage
 
 ```
 var app = angular.module('exampleApp', ['cenkce.utils'])
@@ -15,5 +17,18 @@ var app = angular.module('exampleApp', ['cenkce.utils'])
                             };
                         }]);
                         
+<div ng-controller="ctrl">
+    <input ng-model='photo' class="cropper-file" type="file" value="Yükle" style="display: none;">
+    <div class="cropper" cropper>
+        <div class="cropperPreview" cropper-preview><img class="cropperPreview-placeholder" src="http://placehold.it/250x250"></div>
+        <div class="cropperSave"><img class="cropperPreview-placeholder" ng-src="{{saveData}}" src="http://placehold.it/250x250"></div>
+        <div class="cropperPreview-zoom-header">Zoom</div>
+        <input type="range" class="cropperPreview-zoom-rangeTool" ng-model="zoom" min="0" max="1" step="0.01">
+        <div>
+            <a href="" ng-click="fileBrowse();">Load</a>
+            <a href=""  ng-click="save()">Save</a>
+        </div>
+    </div>
+</div>
 ```
 
