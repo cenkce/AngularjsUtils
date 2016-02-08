@@ -5,8 +5,7 @@ Angularjs utilities library
 
 Usage
 
-`
-var app = angular.module('exampleApp', ['cenkce.utils'])
+`var app = angular.module('exampleApp', ['cenkce.utils'])
                          .controller('ctrl', ['$scope', function ($scope) {
 
                             $scope.save = function () {
