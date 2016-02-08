@@ -5,7 +5,7 @@ Angularjs utilities library
 
 For more info http://cropperjs.com/
 
-- Usage
+- Usage. You can look at examples folder.
 
 ```
 var app = angular.module('exampleApp', ['cenkce.utils'])
