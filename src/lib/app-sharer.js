@@ -3,7 +3,7 @@
  */
 
 
-angular.module('cenkce.utils').service('utils.sharer', Sharer);
+angular.module('cenkce.utils').service('cenkce.utils.sharer', Sharer);
 Sharer.$inject = ['$q'];
 
 function Sharer($q) {

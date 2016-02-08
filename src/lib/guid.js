@@ -1,7 +1,7 @@
 /**
  * Created by cenkce on 2/1/16.
  */
-angular.module('cenkce.utils').service('cenkce.generateUUID', generateUUID);
+angular.module('cenkce.utils').service('cenkce.utils.generateUUID', generateUUID);
 function generateUUID() {
     var d = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {

@@ -3,7 +3,7 @@
  */
 
 
-angular.module('cenkce.utils').factory('utils.baseController', BaseController);
+angular.module('cenkce.utils').factory('cenkce.utils.baseController', BaseController);
 
 BaseController.$inject = ['$scope'];
 
@@ -14,21 +14,24 @@ BaseController.$inject = ['$scope'];
  * @constructor
  */
 function BaseController($scope) {
-    var page = [];
-    var unbinds = [];
+    var _unbinds = [], _that = this;
 
     //Auto unbinds event hadlers when scope is destroyed
     $scope.$on('$destroy', function () {
-        for(var u in unbinds){
-            unbinds[u].call();
-        }
+        _that.clearEventHandlers();
     });
 
+    this.clearEventHandlers = function () {
+        for(var u in _unbinds){
+            _unbinds[u].call();
+        }
+    };
+
     this.$on = function (scope, event, handler) {
-        unbinds.push(scope.$on(event, handler));
+        _unbinds.push(scope.$on(event, handler));
     };
 
     this.$watch = function (scope, event, handler) {
-        unbinds.push(scope.$watch(event, handler));
+        _unbinds.push(scope.$watch(event, handler));
     };
 };

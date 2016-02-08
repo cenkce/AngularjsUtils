@@ -20,7 +20,7 @@ var options = {
         sequences     : true,  // join consecutive statemets with the “comma operator”
         properties    : true,  // optimize property access: a["foo"] → a.foo
         dead_code     : true,  // discard unreachable code
-        drop_debugger : false,  // discard “debugger” statements
+        drop_debugger : true,  // discard “debugger” statements
         unsafe        : false, // some unsafe optimizations (see below)
         conditionals  : true,  // optimize if-s and conditional expressions
         comparisons   : true,  // optimize comparisons

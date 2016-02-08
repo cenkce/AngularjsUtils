@@ -4,6 +4,7 @@
 
 ImageFileReader.$inject = ['$q'];
 
+//TODO:refactor to file-reader
 function ImageFileReader(p) {
     var $q = p;
     this.read = function(files) {
@@ -51,4 +52,4 @@ function ImageFileReader(p) {
     };
 };
 
-angular.module('cenkce.utils').service('cenkce.imageFileReader', ImageFileReader);
+angular.module('cenkce.utils').service('cenkce.utils.imageFileReader', ImageFileReader);

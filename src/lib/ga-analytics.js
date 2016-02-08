@@ -2,7 +2,7 @@
  * Created by cenkce on 1/25/16.
  */
 
-angular.module('cenkce.utils').service('cenkce.ga', GAnalytics);
+angular.module('cenkce.utils').service('cenkce.uitls.ga', GAnalytics);
 
 GAnalytics.$inject = ['$window'];
 

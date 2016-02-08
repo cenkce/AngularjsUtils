@@ -1,7 +1,7 @@
 /*!
  * angularjs-components
  * https://github.com/cenkce/angularjs-utils#readme
- * Version: 0.1.0 - 2016-02-05T21:22:16.288Z
+ * Version: 0.1.0 - 2016-02-08T10:01:43.251Z
  * License: MIT
  */
 
@@ -15,7 +15,7 @@ var module = angular.module('cenkce.utils', ['ng']);
  */
 
 
-angular.module('cenkce.utils').service('utils.sharer', Sharer);
+angular.module('cenkce.utils').service('cenkce.utils.sharer', Sharer);
 Sharer.$inject = ['$q'];
 
 function Sharer($q) {
@@ -68,7 +68,7 @@ function Sharer($q) {
  */
 
 
-angular.module('cenkce.utils').factory('utils.baseController', BaseController);
+angular.module('cenkce.utils').factory('cenkce.utils.baseController', BaseController);
 
 BaseController.$inject = ['$scope'];
 
@@ -79,22 +79,25 @@ BaseController.$inject = ['$scope'];
  * @constructor
  */
 function BaseController($scope) {
-    var page = [];
-    var unbinds = [];
+    var _unbinds = [], _that = this;
 
     //Auto unbinds event hadlers when scope is destroyed
     $scope.$on('$destroy', function () {
-        for(var u in unbinds){
-            unbinds[u].call();
-        }
+        _that.clearEventHandlers();
     });
 
+    this.clearEventHandlers = function () {
+        for(var u in _unbinds){
+            _unbinds[u].call();
+        }
+    };
+
     this.$on = function (scope, event, handler) {
-        unbinds.push(scope.$on(event, handler));
+        _unbinds.push(scope.$on(event, handler));
     };
 
     this.$watch = function (scope, event, handler) {
-        unbinds.push(scope.$watch(event, handler));
+        _unbinds.push(scope.$watch(event, handler));
     };
 };
 
@@ -102,7 +105,7 @@ function BaseController($scope) {
  * Created by cenkce on 1/22/16.
  */
 
-CropperApplication.$inject = ['cenkce.imageFileReader', '$rootScope', '$window', '$q'];
+CropperApplication.$inject = ['cenkce.utils.imageFileReader', '$rootScope', '$window', '$q'];
 
 var CropServiceEvents = {
     imageLoaded :'cropper:image-loaded',
@@ -134,23 +137,51 @@ function CropperApplication(imageReader, $rootScope, $window, $q){
     if(typeof Cropper === 'undefined')
         throw new Error('Croppperjs is not found.');
 
+    /**
+     * Sets dirty state
+     * @param value
+     */
     function setDirty(value) {
         _isDirty = value;
     }
 
+    /**
+     * Returns cropperjs html container element
+     * @returns {*|Object}
+     */
     this.getElement = function () {
         return _element;
     };
 
+    /**
+     * Sets cropperjs config
+     * @param config
+     */
     this.setConfig = function (config) {
         _config = angular.copy(config);
     };
 
+    /**
+     * Return cropperjs config
+     */
     this.getConfig = function () {
         angular.copy(_config);
     };
 
-    this.exportData = function () {
+    /**
+     * Returns an image data object with base64 data
+     *
+     * {
+     *   //Base64 data
+     *   url:'',
+     *   //Headerless Base64 data
+     *   base64:''
+     * }
+     * @param w
+     * @param h
+     * @returns {*}
+     */
+    this.exportData = function (w, h) {
         if(!_cropper)
             return;
 
@@ -159,7 +190,7 @@ function CropperApplication(imageReader, $rootScope, $window, $q){
         var img    = new Image();
 
         var canvas = _cropper.getCroppedCanvas({width:w, height:h});
-        data.url = canvas.toDataURL("image/jpeg", 1.0);
+        data.url   = canvas.toDataURL("image/jpeg", 1.0);
 
         img.src = data.url;
 
@@ -172,10 +203,15 @@ function CropperApplication(imageReader, $rootScope, $window, $q){
             data.base64 = data.url.substring(data.idx + prefix.length);
         }
 
-        data.fileName = generateUUID()+'.jpg';
+        //data.fileName = generateUUID()+'.jpg';
         return data;
     };
 
+    /**
+     * Draw an image via canvas element
+     * @param image
+     * @returns {string}
+     */
     function drawImage(image) {
         var tempCanvas = document.createElement('canvas');
         tempCanvas.width = image.naturalWidth;
@@ -187,20 +223,37 @@ function CropperApplication(imageReader, $rootScope, $window, $q){
         return tempCanvas.toDataURL();
     };
 
+    /**
+     * Sets cropperjs zoom
+     * @param value
+     */
     this.zoomTo = function (value) {
         if(_cropper)
             _cropper.zoomTo(value);
     };
 
+    /**
+     * Sets cropperjs rotate
+     * @param degree
+     */
     this.rotate = function (degree) {
         if(_cropper)
             _cropper.rotate(degree);
     };
 
+    /**
+     * Returns Cropperjs instance
+     * @returns {{}|*|cropper|$scope.cropper|Cropper.cropper|j.cropper}
+     */
     this.getCropper = function () {
         return _cropper;
     };
 
+    /**
+     * Loads an image from File object
+     * @param files
+     * @returns {promise|*|module.exports.currentlyUnhandled.promise|AnimateRunner.promise|qFactory.Deferred.promise|vd.g.promise}
+     */
     this.load = function(files){
         setDirty(true);
         var defer = $q.defer();
@@ -288,7 +341,8 @@ function CropperApplication(imageReader, $rootScope, $window, $q){
     }
 }
 
-CropperComponent.$inject = ['cenkce.cropperApp'];
+
+CropperComponent.$inject = ['cenkce.utils.cropperApp'];
 
 function CropperComponent($cropper){
     var _btn;
@@ -306,11 +360,11 @@ function CropperComponent($cropper){
                     $cropper.zoomTo(newV);
             });
 
-            $scope.exportCroppedData = function (w, h) {
-                $cropper.exportData();
+            $scope.$parent.exportCroppedData = function (w, h) {
+                return $cropper.exportData(w, h);
             };
 
-            $scope.fileBrowse = function () {
+            $scope.$parent.fileBrowse = function () {
                 console.log('browse');
                 _btn[0].click();
             };
@@ -339,11 +393,8 @@ function CropperComponent($cropper){
                     },
                     //messages
                     function (data) {
-                        console.log(data);
                         if(data.message == CropServiceEvents.imageLoaded) {
-                            //data.complete();
                         } else if(data.message == CropServiceEvents.completed) {
-                            //data.complete();
                         }
                     }
                 );
@@ -370,7 +421,7 @@ function CropperComponentPreview(){
     }
 };
 
-angular.module('cenkce.utils').service('cenkce.cropperApp', CropperApplication);
+angular.module('cenkce.utils').service('cenkce.utils.cropperApp', CropperApplication);
 angular.module('cenkce.utils').directive('cropper', CropperComponent);
 angular.module('cenkce.utils').directive('cropperPreview', CropperComponentPreview);
 
@@ -378,7 +429,7 @@ angular.module('cenkce.utils').directive('cropperPreview', CropperComponentPrevi
  * Created by cenkce on 1/25/16.
  */
 
-angular.module('cenkce.utils').service('cenkce.ga', GAnalytics);
+angular.module('cenkce.utils').service('cenkce.uitls.ga', GAnalytics);
 
 GAnalytics.$inject = ['$window'];
 
@@ -405,7 +456,7 @@ function GAnalytics($window) {
 /**
  * Created by cenkce on 2/1/16.
  */
-angular.module('cenkce.utils').service('cenkce.generateUUID', generateUUID);
+angular.module('cenkce.utils').service('cenkce.utils.generateUUID', generateUUID);
 function generateUUID() {
     var d = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -415,12 +466,14 @@ function generateUUID() {
     });
     return uuid;
 };
+
 /**
  * Created by cenkce on 1/23/16.
  */
 
 ImageFileReader.$inject = ['$q'];
 
+//TODO:refactor to file-reader
 function ImageFileReader(p) {
     var $q = p;
     this.read = function(files) {
@@ -468,6 +521,6 @@ function ImageFileReader(p) {
     };
 };
 
-angular.module('cenkce.utils').service('cenkce.imageFileReader', ImageFileReader);
+angular.module('cenkce.utils').service('cenkce.utils.imageFileReader', ImageFileReader);
 
 }(window.angular));
