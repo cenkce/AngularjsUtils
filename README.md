@@ -1,11 +1,11 @@
 # AngularjsUtils
 Angularjs utilities library
 
-#Cropperjs Angular ViewModel and Adapter Application
+#Cropperjs Angular Component and Adapter Application
 
 Usage
 
-'
+`
 var app = angular.module('exampleApp', ['cenkce.utils'])
                          .controller('ctrl', ['$scope', function ($scope) {
 
@@ -15,4 +15,5 @@ var app = angular.module('exampleApp', ['cenkce.utils'])
                             };
                         }]);
                         
-'
+`
+
