@@ -33,8 +33,15 @@ var app = angular.module('exampleApp', ['cenkce.utils'])
 ```
 
 - Sharing Component for Facebook and Twitter
+Example is coming soon
+
 - Google Analytics Component
+Example is coming soon
+
 - File Reader Component for input file element
+Example is coming soon
+
 - Guid Generator Component
+Example is coming soon
 
 
