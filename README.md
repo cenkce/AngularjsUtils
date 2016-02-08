@@ -1,7 +1,7 @@
 # AngularjsUtils
 Angularjs utilities library
 
-#Cropperjs Angular Component and Adapter Application
+###Cropperjs Angular Component and Adapter Application
 
 For more info http://cropperjs.com/
 
