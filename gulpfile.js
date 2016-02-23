@@ -129,7 +129,7 @@ gulp.task('watch', function() {
 
 gulp.task('build', ['js:app']);
 
-gulp.task('default', ['clean'], function () {
+gulp.task('default', [], function () {
     gulp.start('build');
 });
 

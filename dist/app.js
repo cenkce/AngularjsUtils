@@ -1,7 +1,7 @@
 /*!
  * angularjs-components
  * https://github.com/cenkce/angularjs-utils#readme
- * Version: 0.1.0 - 2016-02-08T10:01:43.251Z
+ * Version: 0.1.0 - 2016-02-23T13:01:13.622Z
  * License: MIT
  */
 
@@ -92,6 +92,12 @@ function BaseController($scope) {
         }
     };
 
+    this.unbindAll = function () {
+        while(_unbinds.length > 0){
+            (_unbinds.shilt())();
+        }
+    };
+
     this.$on = function (scope, event, handler) {
         _unbinds.push(scope.$on(event, handler));
     };
@@ -143,6 +149,63 @@ function CropperApplication(imageReader, $rootScope, $window, $q){
      */
     function setDirty(value) {
         _isDirty = value;
+    }
+
+    function create(source){
+        setDirty(true);
+        var defer = $q.defer();
+
+        var img = new Image;
+        img.src = source;
+
+        img.onload = function () {
+            //var img = new Image;
+
+            if($window.EXIF === undefined)
+                throw new Error('exif-js cannot be found.');
+
+            //IOS auto rotation hack
+            _image.src = _that.drawImage(img);
+
+            _image.onload = function () {
+                _element.append(_image);
+                _cropper = new Cropper(_image, _config);
+                setDirty(false);
+
+                //detects image orientation and rotates it
+                _that.autoRotate(this.src);
+                defer.resolve('cenkce');
+            };
+        };
+
+        return defer.promise;
+    }
+
+    this.getImage = function () {
+        var image = new Image();
+        image.src = _image.src;
+        return image;
+    }
+
+    this.autoRotate = function (source) {
+        EXIF.getData(source, function() {
+            //defer.notify({message:CropServiceEvents.EXIFFetched});
+
+            switch(this.exifdata.Orientation){
+                case 8:
+                    _cropper.rotate(-90);
+                    break;
+                case 3:
+                    _cropper.rotate(180);
+                    break;
+                case 6:
+                    _cropper.rotate(90);
+                    break;
+                default:
+                    break;
+            }
+
+        });
     }
 
     /**
@@ -212,7 +275,7 @@ function CropperApplication(imageReader, $rootScope, $window, $q){
      * @param image
      * @returns {string}
      */
-    function drawImage(image) {
+    this.drawImage = function(image) {
         var tempCanvas = document.createElement('canvas');
         tempCanvas.width = image.naturalWidth;
         tempCanvas.height = image.naturalHeight;
@@ -243,7 +306,7 @@ function CropperApplication(imageReader, $rootScope, $window, $q){
 
     /**
      * Returns Cropperjs instance
-     * @returns {{}|*|cropper|$scope.cropper|Cropper.cropper|j.cropper}
+     * @returns {cropper}
      */
     this.getCropper = function () {
         return _cropper;
@@ -254,8 +317,7 @@ function CropperApplication(imageReader, $rootScope, $window, $q){
      * @param files
      * @returns {promise|*|module.exports.currentlyUnhandled.promise|AnimateRunner.promise|qFactory.Deferred.promise|vd.g.promise}
      */
-    this.load = function(files){
-        setDirty(true);
+    this.loadFromFileObject = function(files){
         var defer = $q.defer();
 
         _config.cropend = function (e, action) {
@@ -264,81 +326,51 @@ function CropperApplication(imageReader, $rootScope, $window, $q){
         if(files.length > 1)
             throw new Error('Multi-files are not supported');
 
-        if($window.EXIF === undefined)
-            throw new Error('exif-js cannot be found.');
-
         imageReader.read(files).then(function (data) {
             if(!data[0].url){
-                throw new Error('File data is not readable');
+                defer.reject('File data is not readable');
             }
 
-            var img = new Image;
-            img.src = data[0].url;
-
-            img.onload = function () {
-                //var img = new Image;
-                setDirty(false);
-
-                //IOS auto rotation hack
-                _image.src = drawImage(img);
-
-                _image.onload = function () {
-                    //var container = angular.element('<div></div>);
-                    //defer.notify({message:CropServiceEvents.imageLoaded, complete: function () {
-                        console.log('completed');
-
-                        _element.append(_image);
-                        _cropper = new Cropper(_image, {
-                            dragMode: 'move',
-                            scalable:false,
-                            aspectRatio: 1,
-                            restore: false,
-                            minCropBoxWidth:200,
-                            minCropBoxHeight:200,
-                            checkOrientation : false,
-                            guides: false,
-                            toggleDragModeOnDblclick:false,
-                            center: false,
-                            highlight: false,
-                            cropBoxMovable: false,
-                            cropBoxResizable: false,
-                            cropend: function (e, action) {
-                            }});
-
-
-                        //detects image orientation and rotates it by orientation.
-                        EXIF.getData(files[0], function() {
-                            defer.notify({message:CropServiceEvents.EXIFFetched});
-
-                            switch(this.exifdata.Orientation){
-                                case 8:
-                                    _cropper.rotate(-90);
-                                    break;
-                                case 3:
-                                    _cropper.rotate(180);
-                                    break;
-                                case 6:
-                                    _cropper.rotate(90);
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            //defer.notify({message:CropServiceEvents.completed, complete: function () {
-                                defer.resolve();
-                            //}});
-                        });
-/*
-                    }, cancel: function () {
-                        defer.reject();
-                    }});*/
-                    //Creates new Cropper instance and injects hacked image to
-                };
-            };
+            create(data[0].url).then(
+                function (data) {
+                    defer.resolve(data);
+                },
+                function (data) {
+                    defer.reject(data);
+                },
+                function (data) {
+                    defer.notify(data);
+                }
+            );
         });
 
         return defer.promise;
-    }
+    };
+
+    /**
+     * Loads an image from url
+     * @param url
+     * @returns {promise}
+     */
+    this.loadFromUrl = function(url){
+
+        _config.cropend = function (e, action) {
+        };
+
+        var p = create(url).then(
+            function (data) {
+                return data;
+            },
+            function (data) {
+                return data;
+            },
+            function (data) {
+                return data;
+            }
+        );
+
+        return p;
+    };
 }
 
 
@@ -355,7 +387,6 @@ function CropperComponent($cropper){
             $scope.zoom           = 0;
 
             $scope.$watch('zoom', function (newV, oldV) {
-                console.log('zoom');
                 if(newV)
                     $cropper.zoomTo(newV);
             });
@@ -365,7 +396,6 @@ function CropperComponent($cropper){
             };
 
             $scope.$parent.fileBrowse = function () {
-                console.log('browse');
                 _btn[0].click();
             };
         }],
@@ -384,7 +414,7 @@ function CropperComponent($cropper){
             //file input source is changed by user
             _btn.bind('change', function (e) {
                 $scope.addPreview($cropper.getElement());
-                $cropper.load(e.target.files).then(
+                $cropper.loadFromFileObject(e.target.files).then(
                     //completed
                     function (data) {
                     },

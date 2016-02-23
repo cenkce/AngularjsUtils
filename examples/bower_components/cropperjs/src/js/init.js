@@ -30,7 +30,7 @@
         url = element.toDataURL();
       }
 
-      _this.load(url);
+      _this.loadFromFileObject(url);
     },
 
     load: function (url) {

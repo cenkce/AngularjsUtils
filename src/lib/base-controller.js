@@ -27,6 +27,12 @@ function BaseController($scope) {
         }
     };
 
+    this.unbindAll = function () {
+        while(_unbinds.length > 0){
+            (_unbinds.shilt())();
+        }
+    };
+
     this.$on = function (scope, event, handler) {
         _unbinds.push(scope.$on(event, handler));
     };

@@ -82,7 +82,7 @@
 
         // Clear previous data
         _this.options.data = null;
-        _this.load(url);
+        _this.loadFromFileObject(url);
       }
 
       return _this;
