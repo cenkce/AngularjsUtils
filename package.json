@@ -4,7 +4,8 @@
   "description": "Angularjs utils and components",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start karma.config.js",
+    "dev-test": "karma start karma.config.js --log-level=DEBUG"
   },
   "repository": {
     "type": "git",
