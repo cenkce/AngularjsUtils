@@ -7,7 +7,7 @@ For more info http://cropperjs.com/
 
 - Usage. You can look at examples folder.
 
-```
+```javascript
 var app = angular.module('exampleApp', ['cenkce.utils'])
                          .controller('ctrl', ['$scope', function ($scope) {
 
