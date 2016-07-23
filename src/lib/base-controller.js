@@ -29,7 +29,7 @@ function BaseController($scope) {
 
     this.unbindAll = function () {
         while(_unbinds.length > 0){
-            (_unbinds.shilt())();
+            (_unbinds.shift())();
         }
     };
 
